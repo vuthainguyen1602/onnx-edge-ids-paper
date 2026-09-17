@@ -19,10 +19,21 @@ Diaz-Gorrin, J., Caballero-Gil, C., Brankovic, L.: Enhancing network security
   with generative {AI} on {Jetson Orin Nano}. Applied Sciences  \textbf{16}(3),
   ~1442 (2026). \doi{10.3390/app16031442}
 
+\bibitem{duan2026xamt}
+Duan, B., Dong, R., Dong, N., Kim, D.D., Yang, G.: Testing deep learning
+  library {APIs} via cross-framework differential fuzzing (2026),
+  arXiv:2608.11886
+
 \bibitem{eren2026drdos}
 Eren, S., G{\"u}ltekin, A., {\"O}zkan, {\"O}., {\"O}z{\c{c}}elik, {\.I}.:
   High-throughput and low-latency {DrDoS} detection using quantized {ONNX}
   models. Symmetry  \textbf{18}(7), ~1187 (2026). \doi{10.3390/sym18071187}
+
+\bibitem{ferreira2026canbus}
+Ferreira, L., Abreu, R., Branco, F., Reis, M.J.C.S., Ser{\^o}dio, C., Valente,
+  A.: A two-stage hybrid intrusion detection system for {CAN} bus based on
+  statistical thresholds and random forest classifiers. Electronics
+  \textbf{15}(11), ~2239 (2026). \doi{10.3390/electronics15112239}
 
 \bibitem{hamdan2020edge}
 Hamdan, S., Ayyash, M., Almajali, S.: Edge-computing architectures for internet
@@ -33,6 +44,12 @@ Hamdan, S., Ayyash, M., Almajali, S.: Edge-computing architectures for internet
 Hasan, T., Hossain, A., Ansari, M.Q., Syed, T.H.: Enhanced intrusion detection
   in {IIoT} networks: A lightweight approach with autoencoder-based feature
   learning (2025), arXiv:2501.15266
+
+\bibitem{hernandezlobato2009pruning}
+Hern{\'a}ndez-Lobato, D., Mart{\'i}nez-Mu{\~n}oz, G., Su{\'a}rez, A.:
+  Statistical instance-based pruning in ensembles of independent classifiers.
+  IEEE Transactions on Pattern Analysis and Machine Intelligence
+  \textbf{31}(2),  364--369 (2009). \doi{10.1109/TPAMI.2008.204}
 
 \bibitem{koschel2023arm}
 Koschel, S., Buschj{\"a}ger, S., Lucchese, C., Morik, K.: Fast inference of
@@ -49,6 +66,11 @@ Lanvin, M., Gimenez, P.F., Han, Y., Majorczyk, F., M{\'e}, L., Totel, {\'E}.:
 Lundberg, S.M., Lee, S.I.: A unified approach to interpreting model
   predictions. Advances in Neural Information Processing Systems  \textbf{30}
   (2017)
+
+\bibitem{naik2026sensitivity}
+Naik, A., Garg, C., Akshay, S., Gupta, A., Meel, K.S.: Quantifying sensitivity
+  for tree ensembles: A symbolic and compositional approach (2026),
+  arXiv:2605.13830
 
 \bibitem{nakandala2020hummingbird}
 Nakandala, S., Saur, K., Yu, G.I., Karanasos, K., Curino, C., Weimer, M.,
@@ -80,6 +102,10 @@ Sharafaldin, I., Lashkari, A.H., Ghorbani, A.A.: Toward generating a new
 Shi, W., Cao, J., Zhang, Q., Li, Y., Xu, L.: Edge computing: Vision and
   challenges. IEEE Internet of Things Journal  \textbf{3}(5),  637--646 (2016).
   \doi{10.1109/JIOT.2016.2579198}
+
+\bibitem{wang2018qwyc}
+Wang, S., Gupta, M., You, S.: Quit when you can: Efficient evaluation of
+  ensembles with ordering optimization (2018), arXiv:1806.11202
 
 \bibitem{zhang2026edgeics}
 Zhang, Z., Zhang, L., Xu, J., Chen, Z., Wang, P.: An edge-deployable
