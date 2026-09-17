@@ -35,6 +35,11 @@ Ferreira, L., Abreu, R., Branco, F., Reis, M.J.C.S., Ser{\^o}dio, C., Valente,
   statistical thresholds and random forest classifiers. Electronics
   \textbf{15}(11), ~2239 (2026). \doi{10.3390/electronics15112239}
 
+\bibitem{gama2014survey}
+Gama, J., {\c{Z}}liobait{\.e}, I., Bifet, A., Pechenizkiy, M., Bouchachia, A.:
+  A survey on concept drift adaptation. ACM Computing Surveys  \textbf{46}(4),
+  1--37 (2014)
+
 \bibitem{hamdan2020edge}
 Hamdan, S., Ayyash, M., Almajali, S.: Edge-computing architectures for internet
   of things applications: A survey. Sensors  \textbf{20}(22), ~6441 (2020).
@@ -84,6 +89,11 @@ Nasir, K., Badri, S.K., Alghazzawi, D.M., Alghamdi, M.Y., Alkhozae, M.,
   explainable intrusion detection system optimized via metaheuristic learning.
   Scientific Reports  \textbf{16}, ~2313 (2026).
   \doi{10.1038/s41598-025-32183-8}
+
+\bibitem{sethi2017md3}
+Sethi, T.S., Kantardzic, M.: On the reliable detection of concept drift from
+  streaming unlabeled data. Expert Systems with Applications  \textbf{82},
+  77--99 (2017). \doi{10.1016/j.eswa.2017.04.008}
 
 \bibitem{sforzin2016rpids}
 Sforzin, A., G{\'o}mez~M{\'a}rmol, F., Conti, M., Bohli, J.M.: {RPiDS}:
