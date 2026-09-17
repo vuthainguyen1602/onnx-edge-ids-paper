@@ -1,11 +1,13 @@
-% ONNX 2026 -- Springer LNCS template (English), companion systems paper to
-% the ONNX-EdgeIDS software (github.com/vuthainguyen1602/onnx-edge-ids) and,
-% separately, to soict2026.
+% ONNX-EdgeIDS paper -- Springer LNCS template (English), companion systems
+% paper to the ONNX-EdgeIDS software (github.com/vuthainguyen1602/onnx-edge-ids).
+% Standalone repo: this manuscript was moved out of the Thesis_IDS monorepo
+% (formerly papers/onnx2026/) so it can be versioned/reviewed independently of
+% the core thesis papers (soict2026/fair2026), which stay in Thesis_IDS.
 % Compile: ./compile.sh
 %
 % STATUS: draft. Venue/deadline not yet chosen (see ../README.md); author
 % order and institute block are copied from the SOICT 2026 companion paper
-% and must be re-confirmed before submission.
+% (in the Thesis_IDS repo) and must be re-confirmed before submission.
 %
 % RESULT PROVENANCE: the cold-start, throughput, latency, memory, power, and
 % parity numbers in this draft are the same validation-run figures recorded
@@ -20,7 +22,7 @@
 \usepackage{polyglossia}
 \setdefaultlanguage{english}
 \setotherlanguage{vietnamese}
-\input{../../../papers/latex/fonts-xelatex-vi.tex}
+\input{vendor/fonts-xelatex-vi.tex}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
@@ -295,7 +297,7 @@ Table~\ref{tab:coldstart} breaks down the time from process start to the first s
 
 \textbf{Quantizing the ONNX graph itself.} Eren et al.~\cite{eren2026drdos} demonstrate that ONNX-level quantization measurably changes throughput and latency for network-security classifiers, on DNN architectures rather than tree ensembles. Whether the same holds for a \texttt{TreeEnsembleClassifier} graph (whose costs are dominated by branching and memory access, not the matrix multiplies quantization typically targets) is an open, testable question for this toolkit rather than an assumption we import; we list it as future work.
 
-\textbf{Limitations.} All steady-state, cold-start, and power figures in Sect.~\ref{sec:results} come from a single validation run under one set of board conditions; \texttt{submission\_checklist.md}'s own acceptance criteria (Sect.~\ref{sec:export}) call for repeated runs, which this draft has not yet incorporated. Power is total-board \texttt{tegrastats} power without an idle baseline subtracted, so it should not be read as per-inference energy. End-to-end throughput and latency over a wired inter-board link -- as opposed to the current Wi-Fi link -- are not yet measured; \ph{fill in once available, following the protocol in \texttt{papers/onnx2026/README.md}}. The lockstep traversal of Sect.~\ref{sec:lockstep} is measured on this paper's ARM64 development machine, not yet on the Jetson boards Table~\ref{tab:engines} and Table~\ref{tab:coldstart} report on; \ph{re-measure Table~\ref{tab:lockstep} on the Jetson Cortex-A78AE boards and fold the result into Table~\ref{tab:engines} once available}. This toolkit's classifier node does not yet write verdicts to a database or raise alerts; that integration exists in the earlier deployment work's stack and is out of scope for the software paper this toolkit accompanies, but end-to-end latency including a persistence step is not covered here either.
+\textbf{Limitations.} All steady-state, cold-start, and power figures in Sect.~\ref{sec:results} come from a single validation run under one set of board conditions; \texttt{submission\_checklist.md}'s own acceptance criteria (Sect.~\ref{sec:export}) call for repeated runs, which this draft has not yet incorporated. Power is total-board \texttt{tegrastats} power without an idle baseline subtracted, so it should not be read as per-inference energy. End-to-end throughput and latency over a wired inter-board link -- as opposed to the current Wi-Fi link -- are not yet measured; \ph{fill in once available, following the protocol in this repo's \texttt{README.md}}. The lockstep traversal of Sect.~\ref{sec:lockstep} is measured on this paper's ARM64 development machine, not yet on the Jetson boards Table~\ref{tab:engines} and Table~\ref{tab:coldstart} report on; \ph{re-measure Table~\ref{tab:lockstep} on the Jetson Cortex-A78AE boards and fold the result into Table~\ref{tab:engines} once available}. This toolkit's classifier node does not yet write verdicts to a database or raise alerts; that integration exists in the earlier deployment work's stack and is out of scope for the software paper this toolkit accompanies, but end-to-end latency including a persistence step is not covered here either.
 
 \section{Conclusion}
 
@@ -306,7 +308,7 @@ We presented \textsc{ONNX-EdgeIDS}, a two-runtime serving toolkit for a two-stag
 The authors declare that they have no competing interests.
 \end{credits}
 
-\bibliographystyle{../../latex/splncs04}
-\bibliography{references,../../latex/related_work}
+\bibliographystyle{splncs04}
+\bibliography{references}
 
 \end{document}
