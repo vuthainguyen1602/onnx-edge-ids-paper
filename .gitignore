@@ -1,0 +1,8 @@
+*.aux
+*.log
+*.blg
+*.out
+missfont.log
+manuscript/main.pdf
+venv/
+__pycache__/
