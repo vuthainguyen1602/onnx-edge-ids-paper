@@ -8,24 +8,31 @@ This repo was split out of the `Thesis_IDS` monorepo (was `papers/onnx2026/`) so
 
 ## Research question
 
-Earlier deployment work found that an accurate classifier can still be served too slowly for an 8 GB edge board, if the serving stack is inherited unchanged from training. This paper presents the resulting software response: a two-runtime (ONNX Runtime / pure NumPy) serving toolkit built around a single ONNX artifact, with a framework-agnostic NumPy exporter and a release-gated parity validator, integrated into a two-stage Kafka gate-then-classifier pipeline — plus a measured optimization (not just a future-work citation) of the NumPy backend's tree-traversal loop.
+A detector served by a primary runtime (ONNX Runtime) and a fallback runtime (NumPy) promises the same verdict from both. How do you check that promise, what does the fallback cost at streaming batch sizes, and how much of the forest does real traffic need if verdicts may not change?
+
+Findings, all regenerable from `code/`:
+
+- **Boundary-directed parity testing.** One probe per split node, on the threshold and one float32 step either side (287,223 probes, 99.9% reach their node). A float64 NumPy traversal flips 328 labels against ONNX Runtime on the probes but only 15 on the whole 447,275-row labelled test split, so a 2,000-row replay gate misses it 93.5% of the time. The deployed float32 traversal flips none.
+- **Why labels flip.** The forest's 95,741 splits share 815 distinct (feature, threshold) pairs, so one boundary value moves many trees at once; the same fact makes an exhaustive gate cheap.
+- **Block-lockstep traversal.** 71x at batch 1, 11x at 20, 1.4x at 500, and 0.9x at 2,000 (where the old per-tree loop still wins), on real flows.
+- **Exact early exit.** Gate-forwarded traffic needs 104.1 of 200 trees on average with labels provably identical to the full forest: 2.0x, the rule's ceiling.
 
 ## Title
 
-*ONNX-EdgeIDS: A Framework-Agnostic ONNX/NumPy Serving Toolkit for Streaming Intrusion Detection on Jetson Orin Nano Super*
+*Two Runtimes, One Verdict: Boundary-Verified ONNX/NumPy Serving for Streaming Intrusion Detection at the Edge*
 
-## Code: referenced, not duplicated
+## Code
 
-This repo holds the manuscript only. The software it describes lives and is versioned in its own repo, [`vuthainguyen1602/onnx-edge-ids`](https://github.com/vuthainguyen1602/onnx-edge-ids) (Zenodo concept DOI `10.5281/zenodo.22731927`); we reference it rather than vendor a source snapshot here, so there is exactly one place the code can drift from what the paper says.
+**Experiment code lives here**, in [`code/`](code/): the traversals, the early-exit rule, the boundary prober, the served artifacts, the result files quoted in the paper, and tests that run without the dataset. See [`code/README.md`](code/README.md).
 
-**Pinned commit for this draft's measurements:** the throughput/latency/memory/power/parity numbers in the current manuscript, and the lockstep-traversal optimization in Sect. "A Lockstep Traversal Optimization", correspond to `onnx-edge-ids` commit [`59f2723`](https://github.com/vuthainguyen1602/onnx-edge-ids/commit/59f2723). If `main` has moved past that commit when you read this, check out that SHA to reproduce the exact numbers in the paper; re-measuring against a later `main` is also fine but should be noted as such.
+**The serving software** (Kafka gate and classifier nodes, exporter, release gate) stays in its own repo, [`vuthainguyen1602/onnx-edge-ids`](https://github.com/vuthainguyen1602/onnx-edge-ids) (Zenodo concept DOI `10.5281/zenodo.22731927`). The block-lockstep traversal measured here is the one shipped there as of commit [`894238a`](https://github.com/vuthainguyen1602/onnx-edge-ids/commit/894238a); the on-board figures in the paper predate it and describe the per-tree traversal.
 
 | Component | Path (in `onnx-edge-ids`) |
 |-----------|------|
 | Swappable engine contract | `src/onnx_edge_ids/inference_engine.py` |
 | Feature assembly | `src/onnx_edge_ids/feature_matrix.py` |
 | ONNX backend | `src/onnx_edge_ids/onnx_engine.py` |
-| NumPy backend (lockstep traversal, Sect. "A Lockstep Traversal Optimization") | `src/onnx_edge_ids/numpy_engine.py` |
+| NumPy backend (block-lockstep traversal) | `src/onnx_edge_ids/numpy_engine.py` |
 | Framework-agnostic ONNX → NumPy exporter | `scripts/export_numpy.py` |
 | Parity release gate | `scripts/validate_parity.py` |
 | Jetson #1 gate node | `scripts/gate_node.py` |
@@ -41,7 +48,7 @@ This repo holds the manuscript only. The software it describes lives and is vers
 ```bash
 git clone https://github.com/vuthainguyen1602/onnx-edge-ids
 cd onnx-edge-ids
-git checkout 59f2723   # pin to the commit this draft's numbers correspond to
+git checkout 894238a   # the traversal measured in this draft
 ONNX_MODEL=artifacts/ids_rf.onnx FEATURES_JSON=artifacts/feature_columns.json ./scripts/export_artifacts.sh
 python scripts/validate_parity.py --csv <path to a CICIDS2017-derived replay CSV> --rows 2000 \
   --report-json results/parity_report.json
@@ -51,7 +58,7 @@ python scripts/validate_parity.py --csv <path to a CICIDS2017-derived replay CSV
 
 Follow `docs/deploy_2jetson.md` in the software repo: gate on Jetson #1, `classifier_node.py --engine onnx|numpy --batch-size 1|20|500 --metrics-csv ...` on Jetson #2.
 
-**Step 3 — re-measure the lockstep traversal optimization (Sect. "A Lockstep Traversal Optimization") on the Jetson boards themselves**, rather than the ARM64 development machine it was first measured on; fold the result into Table `tab:engines`.
+**Step 3 — regenerate the boundary-parity, traversal and early-exit tables** with `code/experiments/` (see `code/README.md`), then re-run `exp1` and `exp3` on the Jetson boards: their throughput numbers were taken on an ARM64 development machine.
 
 **Step 4 — wired-link end-to-end run (the pending measurement):**
 
@@ -65,7 +72,8 @@ Repeat Step 2 over a wired inter-board link instead of Wi-Fi, and report produce
 - Label agreement / max confidence deviation between backends (parity gate)
 - Artifact size (ONNX vs. NumPy)
 - End-to-end (producer-to-verdict) throughput/latency over a **wired** link — pending
-- Lockstep-traversal speedup, re-measured on Jetson hardware — pending
+- Boundary-probe and replay disagreement counts per runtime (`exp2`)
+- Block-lockstep and exact-early-exit throughput, re-measured on Jetson hardware — pending
 
 ## Manuscript
 
@@ -76,7 +84,7 @@ cd manuscript
 ./compile.sh
 ```
 
-Compiles cleanly (12 pages, 0 undefined citations/references). The numbers in Sect. "Results" are real (from the software's own validation run and this paper's own measured lockstep-traversal benchmark); the remaining `\ph{...}` markers are the wired-link measurement and the Jetson re-measurement of the traversal optimization.
+Compiles cleanly (14 pages, 0 undefined citations/references). On-board numbers come from the software's own validation run; the boundary-parity, traversal and early-exit tables come from `code/results/*.json`. The remaining `\ph{...}` markers are the Jetson re-measurement of those two throughput tables and the wired-link latency.
 
 ## Cross-reference
 
