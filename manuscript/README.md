@@ -9,7 +9,7 @@ cd manuscript
 ./compile.sh
 ```
 
-Compiles cleanly as of this draft (14 pages, 0 undefined citations/references — only cosmetic under/overfull-hbox warnings in the bibliography).
+Compiles cleanly as of this draft (15 pages, 0 undefined citations/references — only cosmetic under/overfull-hbox warnings in the bibliography).
 
 ## TODO before submission
 
@@ -20,6 +20,8 @@ Compiles cleanly as of this draft (14 pages, 0 undefined citations/references �
 - [x] Boundary-directed parity experiment (`../code/experiments/exp2_boundary_parity.py`): 287,223 probes, float32 0 flips, float64 328 flips vs 15 on full replay
 - [x] Block-lockstep traversal measured on real flows, including the batch size where it loses (`exp1`); shipped in `onnx-edge-ids` at `894238a`
 - [x] Exact early exit measured on gate-forwarded traffic (`exp3`)
+- [x] Distribution-shift stress test on CSE-CIC-IDS2018 (`exp4`): detector and gate collapse, serving guarantees hold, undecided rate rises
+- [ ] If the undecided-rate drift signal is to be claimed as more than an observation: calibrate an alarm threshold and measure false alarms on in-distribution windows
 - [ ] Re-run `exp1` and `exp3` on the Jetson Cortex-A78AE boards and merge into Table `tab:engines`
 - [ ] Re-run `exp2` against any other ONNX Runtime provider that will be deployed (CUDA/TensorRT): a different provider is a different runtime
 - [ ] Decide whether the boundary prober should move into `onnx-edge-ids` as part of its release gate
